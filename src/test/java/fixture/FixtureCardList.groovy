@@ -11,6 +11,8 @@ class FixtureCardList {
     List<Card> flush = create("S-A S-2 S-3 S-5 S-Q")
     List<Card> fullHouse = create("S-A D-A C-A S-5 H-5")
     List<Card> fourOfAKind = create("H-2 S-2 D-2 C-2 S-3")
+    List<Card> straightFlush = create("S-6 S-7 S-8 S-9 S-10")
+    List<Card> royalStraightFlush = create("S-K S-Q S-J S-10 S-A")
 
     private static List<Card> create(String s) {
         return CardList.create(Arrays.asList(s.split(" ")))

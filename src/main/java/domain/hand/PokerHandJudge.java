@@ -2,13 +2,18 @@ package domain.hand;
 
 import domain.card.Card;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PokerHandJudge {
     public static String judge(List<Card> cards) {
-        if (isFourOfAKind(cards)) {
+        if (isRoyalStraightFlush(cards)) {
+            return PokerHand.ROYAL_STRAIGHT_FLUSH.getName();
+        } else if (isStraightFlush(cards)) {
+            return PokerHand.STRAIGHT_FLUSH.getName();
+        } else if (isFourOfAKind(cards)) {
             return PokerHand.FOUR_OF_A_KIND.getName();
         } else if (isFullHouse(cards)) {
             return PokerHand.FULL_HOUSE.getName();
@@ -23,7 +28,7 @@ public class PokerHandJudge {
         } else if (isOnePair(cards)) {
             return PokerHand.ONE_PAIR.getName();
         } else {
-            return null; //TODO
+            return PokerHand.HIGH_CARDS.getName();
         }
     }
 
@@ -106,11 +111,26 @@ public class PokerHandJudge {
 
     private static Boolean isStraightFlush(List<Card> cards) {
         //連続した数字で同じスート
-        return null; //TODO
+        return isStraight(cards) && isFlush(cards);
     }
 
     private static Boolean isRoyalStraightFlush(List<Card> cards) {
         //同じスートのA-K-Q-J-10
-        return null; //TODO
+        if (isFlush(cards)) {
+            List<Card> sortCards = cards.stream()
+                    .sorted(Comparator.comparing(card -> card.getTrumpNumber().getNumber()))
+                    .collect(Collectors.toList());
+
+            List<Integer> royalStraight = Arrays.asList(10, 11, 12, 13, 14);
+
+            for (int i = 0; i < sortCards.size(); i++) {
+                if (sortCards.get(i).getTrumpNumber().getNumber() != royalStraight.get(i)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }
