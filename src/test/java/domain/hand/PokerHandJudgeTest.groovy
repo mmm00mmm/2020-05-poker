@@ -11,8 +11,10 @@ class PokerHandJudgeTest extends Specification {
         PokerHandJudge.judge(cards) == expected
 
         where:
-        testName  | cards                         || expected
-        "onePair" | new FixtureCardList().onePair || PokerHand.ONE_PAIR.name
-        "twoPair" | new FixtureCardList().twoPair || PokerHand.TWO_PAIR.name
+        testName       | cards                              || expected
+        "onePair"      | new FixtureCardList().onePair      || PokerHand.ONE_PAIR.name
+        "twoPair"      | new FixtureCardList().twoPair      || PokerHand.TWO_PAIR.name
+        "threeOfAKind" | new FixtureCardList().threeOfAKind || PokerHand.THREE_OF_A_KIND.name
+        "straight"     | new FixtureCardList().straight     || PokerHand.STRAIGHT.name
     }
 }

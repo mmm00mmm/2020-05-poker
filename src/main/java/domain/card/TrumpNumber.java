@@ -1,8 +1,10 @@
 package domain.card;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public enum TrumpNumber {
     TWO("2", 2),
     THREE("3", 3),

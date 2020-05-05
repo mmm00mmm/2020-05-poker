@@ -2,12 +2,17 @@ package domain.hand;
 
 import domain.card.Card;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PokerHandJudge {
     public static String judge(List<Card> cards) {
-        if (isTwoPair(cards)) {
+        if (isStraight(cards)) {
+            return PokerHand.STRAIGHT.getName();
+        } else if (isThreeOfAKind(cards)) {
+            return PokerHand.THREE_OF_A_KIND.getName();
+        } else if (isTwoPair(cards)) {
             return PokerHand.TWO_PAIR.getName();
         } else if (isOnePair(cards)) {
             return PokerHand.ONE_PAIR.getName();
@@ -42,12 +47,28 @@ public class PokerHandJudge {
 
     private static Boolean isThreeOfAKind(List<Card> cards) {
         //同じ番号３枚
-        return null; //TODO
+        return cards.stream()
+                .collect(
+                        Collectors.groupingBy(Card::getTrumpNumber, Collectors.counting())
+                )
+                .entrySet().stream()
+                .filter(c -> c.getValue() == 3)
+                .count()
+                == 1;
     }
 
     private static Boolean isStraight(List<Card> cards) {
         //連続した数字の５枚
-        return null; //TODO
+        List<Card> sortCards = cards.stream()
+                .sorted(Comparator.comparing(card -> card.getTrumpNumber().getNumber()))
+                .collect(Collectors.toList());
+
+        for (int i = 0; i < sortCards.size(); i++) {
+            if (sortCards.get(i).getTrumpNumber().getNumber() != (sortCards.get(0).getTrumpNumber().getNumber() + i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static Boolean isFlush(List<Card> cards) {
