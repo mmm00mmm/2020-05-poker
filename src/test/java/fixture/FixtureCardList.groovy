@@ -10,6 +10,7 @@ class FixtureCardList {
     List<Card> straight = create("S-4 S-2 H-3 H-5 D-6")
     List<Card> flush = create("S-A S-2 S-3 S-5 S-Q")
     List<Card> fullHouse = create("S-A D-A C-A S-5 H-5")
+    List<Card> fourOfAKind = create("H-2 S-2 D-2 C-2 S-3")
 
     private static List<Card> create(String s) {
         return CardList.create(Arrays.asList(s.split(" ")))
