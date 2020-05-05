@@ -16,5 +16,6 @@ class PokerHandJudgeTest extends Specification {
         "twoPair"      | new FixtureCardList().twoPair      || PokerHand.TWO_PAIR.name
         "threeOfAKind" | new FixtureCardList().threeOfAKind || PokerHand.THREE_OF_A_KIND.name
         "straight"     | new FixtureCardList().straight     || PokerHand.STRAIGHT.name
+        "flush"        | new FixtureCardList().flush        || PokerHand.FLUSH.name
     }
 }

@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 public class PokerHandJudge {
     public static String judge(List<Card> cards) {
-        if (isStraight(cards)) {
+        if (isFlush(cards)) {
+            return PokerHand.FLUSH.getName();
+        } else if (isStraight(cards)) {
             return PokerHand.STRAIGHT.getName();
         } else if (isThreeOfAKind(cards)) {
             return PokerHand.THREE_OF_A_KIND.getName();
@@ -73,7 +75,13 @@ public class PokerHandJudge {
 
     private static Boolean isFlush(List<Card> cards) {
         //同じスートの５枚
-        return null; //TODO
+        return cards.stream()
+                .collect(
+                        Collectors.groupingBy(Card::getSuit, Collectors.counting())
+                )
+                .entrySet().stream()
+                .filter(c -> c.getValue() == 5)
+                .count() == 1;
     }
 
     private static Boolean isFullHouse(List<Card> cards) {
