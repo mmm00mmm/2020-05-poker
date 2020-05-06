@@ -1,10 +1,12 @@
 package domain.hand;
 
 import domain.card.Card;
+import domain.card.TrumpNumber;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PokerHandJudge {
@@ -34,45 +36,31 @@ public class PokerHandJudge {
 
     private static Boolean isOnePair(List<Card> cards) {
         //同じ番号が２枚１組
-        return cards.stream()
-                .collect(
-                        Collectors.groupingBy(Card::getTrumpNumber, Collectors.counting())
-                )
+        return groupByTrumpNumber(cards)
                 .entrySet().stream()
-                .filter(c -> c.getValue() == 2)
-                .count()
-                == 1;
+                .filter(card -> card.getValue() == 2)
+                .count() == 1;
     }
 
     private static Boolean isTwoPair(List<Card> cards) {
         //同じ番号２枚２組
-        return cards.stream()
-                .collect(
-                        Collectors.groupingBy(Card::getTrumpNumber, Collectors.counting())
-                )
+        return groupByTrumpNumber(cards)
                 .entrySet().stream()
                 .filter(c -> c.getValue() == 2)
-                .count()
-                == 2;
+                .count() == 2;
     }
 
     private static Boolean isThreeOfAKind(List<Card> cards) {
         //同じ番号３枚
-        return cards.stream()
-                .collect(
-                        Collectors.groupingBy(Card::getTrumpNumber, Collectors.counting())
-                )
+        return groupByTrumpNumber(cards)
                 .entrySet().stream()
                 .filter(c -> c.getValue() == 3)
-                .count()
-                == 1;
+                .count() == 1;
     }
 
     private static Boolean isStraight(List<Card> cards) {
         //連続した数字の５枚
-        List<Card> sortCards = cards.stream()
-                .sorted(Comparator.comparing(card -> card.getTrumpNumber().getNumber()))
-                .collect(Collectors.toList());
+        List<Card> sortCards = sortByTrumpNumber(cards);
 
         for (int i = 0; i < sortCards.size(); i++) {
             if (sortCards.get(i).getTrumpNumber().getNumber() != (sortCards.get(0).getTrumpNumber().getNumber() + i)) {
@@ -100,10 +88,7 @@ public class PokerHandJudge {
 
     private static Boolean isFourOfAKind(List<Card> cards) {
         //同じ番号４枚とその他１枚
-        return cards.stream()
-                .collect(
-                        Collectors.groupingBy(Card::getTrumpNumber, Collectors.counting())
-                )
+        return groupByTrumpNumber(cards)
                 .entrySet().stream()
                 .filter(c -> c.getValue() == 4)
                 .count() == 1;
@@ -117,9 +102,7 @@ public class PokerHandJudge {
     private static Boolean isRoyalStraightFlush(List<Card> cards) {
         //同じスートのA-K-Q-J-10
         if (isFlush(cards)) {
-            List<Card> sortCards = cards.stream()
-                    .sorted(Comparator.comparing(card -> card.getTrumpNumber().getNumber()))
-                    .collect(Collectors.toList());
+            List<Card> sortCards = sortByTrumpNumber(cards);
 
             List<Integer> royalStraight = Arrays.asList(10, 11, 12, 13, 14);
 
@@ -132,5 +115,18 @@ public class PokerHandJudge {
         } else {
             return false;
         }
+    }
+
+    private static List<Card> sortByTrumpNumber(List<Card> cards) {
+        return cards.stream()
+                .sorted(Comparator.comparing(card -> card.getTrumpNumber().getNumber()))
+                .collect(Collectors.toList());
+    }
+
+    private static Map<TrumpNumber, Long> groupByTrumpNumber(List<Card> cards) {
+        return cards.stream()
+                .collect(
+                        Collectors.groupingBy(Card::getTrumpNumber, Collectors.counting())
+                );
     }
 }
