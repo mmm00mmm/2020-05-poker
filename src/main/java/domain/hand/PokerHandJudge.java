@@ -34,7 +34,7 @@ public class PokerHandJudge {
         }
     }
 
-    private static Boolean isOnePair(List<Card> cards) {
+    private static boolean isOnePair(List<Card> cards) {
         //同じ番号が２枚１組
         return groupByTrumpNumber(cards)
                 .entrySet().stream()
@@ -42,7 +42,7 @@ public class PokerHandJudge {
                 .count() == 1;
     }
 
-    private static Boolean isTwoPair(List<Card> cards) {
+    private static boolean isTwoPair(List<Card> cards) {
         //同じ番号２枚２組
         return groupByTrumpNumber(cards)
                 .entrySet().stream()
@@ -50,7 +50,7 @@ public class PokerHandJudge {
                 .count() == 2;
     }
 
-    private static Boolean isThreeOfAKind(List<Card> cards) {
+    private static boolean isThreeOfAKind(List<Card> cards) {
         //同じ番号３枚
         return groupByTrumpNumber(cards)
                 .entrySet().stream()
@@ -58,7 +58,7 @@ public class PokerHandJudge {
                 .count() == 1;
     }
 
-    private static Boolean isStraight(List<Card> cards) {
+    private static boolean isStraight(List<Card> cards) {
         //連続した数字の５枚
         List<Card> sortCards = sortByTrumpNumber(cards);
 
@@ -70,7 +70,7 @@ public class PokerHandJudge {
         return true;
     }
 
-    private static Boolean isFlush(List<Card> cards) {
+    private static boolean isFlush(List<Card> cards) {
         //同じスートの５枚
         return cards.stream()
                 .collect(
@@ -81,12 +81,12 @@ public class PokerHandJudge {
                 .count() == 1;
     }
 
-    private static Boolean isFullHouse(List<Card> cards) {
+    private static boolean isFullHouse(List<Card> cards) {
         //同じ番号３枚と同じ番号２枚
         return isOnePair(cards) && isThreeOfAKind(cards);
     }
 
-    private static Boolean isFourOfAKind(List<Card> cards) {
+    private static boolean isFourOfAKind(List<Card> cards) {
         //同じ番号４枚とその他１枚
         return groupByTrumpNumber(cards)
                 .entrySet().stream()
@@ -94,12 +94,12 @@ public class PokerHandJudge {
                 .count() == 1;
     }
 
-    private static Boolean isStraightFlush(List<Card> cards) {
+    private static boolean isStraightFlush(List<Card> cards) {
         //連続した数字で同じスート
         return isStraight(cards) && isFlush(cards);
     }
 
-    private static Boolean isRoyalStraightFlush(List<Card> cards) {
+    private static boolean isRoyalStraightFlush(List<Card> cards) {
         //同じスートのA-K-Q-J-10
         if (isFlush(cards)) {
             List<Card> sortCards = sortByTrumpNumber(cards);
