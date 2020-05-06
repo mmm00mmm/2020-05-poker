@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum PokerHand {
-    HIGH_CARDS("High CardList"),
+    HIGH_CARDS("High Card"),
     ONE_PAIR("One Pair"),
     TWO_PAIR("Two Pair"),
     THREE_OF_A_KIND("Three Of A Kind"),
