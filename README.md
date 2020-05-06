@@ -3,6 +3,19 @@
 https://github.com/suzuki-hoge/hoge-works/blob/master/2016-07-poker/README.md
 
 ## 日誌
+### 2020/05/06
++ 所要時間：4hほど
++ 実装順
+  + テストパタン追加
+  + リファクタ
++ 感想
+  + テストが書けない( ◠‿◠ )
+    + ありえない組み合わせのテストパタン作っちゃった
+    + めちゃくちゃテストしにくい・・・・
+  + CardListなくせない・Card側の"-"の変換なくせてない
+  + コード量減らせてない
+    + 似たような処理はprivateメソッド切った（sortとgroupby）
+    + PokerHandJudgeクラスにsortとgroupbyを置くのは違和感ある
 ### 2020/5/5
 + 所要時間：5/4と同じく6hほど
 + 実装順
