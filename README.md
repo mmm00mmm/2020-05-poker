@@ -3,6 +3,19 @@
 https://github.com/suzuki-hoge/hoge-works/blob/master/2016-07-poker/README.md
 
 ## 日誌
+### 2020/05/10
++ 所要時間：2.5h
++ 実装順
+  + 役判定メソッドをpublicへ修正
+  + publicメソッドのテスト追加
+  + Convertクラス作成（ただし使用していない）
++ 感想
+  + Convertクラス作ってCardListをCardsに修正したりしてみたけどうまくいかない
+    + Convertクラスで入力文字(String)→List<Card>にしたあと、そのままCardsに渡せばいいのかな
+    + PokerHandJudgeの処理をCardsに移動すべき？
+    + いつもみたく頭がこんがらがったので、中断
+  + privateからpublicにしたことで各テストがやりやすくなった。
+  + 今回はここらへんまでで区切る。２回目でConvertクラスとCardsクラスを使いたい。
 ### 2020/05/06
 + 所要時間：4hほど
 + 実装順
