@@ -21,18 +21,119 @@ class PokerHandJudgeTest extends Specification {
         "S-3 S-2 H-3 H-4 D-3"         || PokerHand.THREE_OF_A_KIND.name
         "S-4 S-2 H-3 H-5 D-6"         || PokerHand.STRAIGHT.name
         "S-A S-2 S-3 S-5 S-Q"         || PokerHand.FLUSH.name
-        "C-8 C-Q C-Q C-6 C-7"         || PokerHand.FLUSH.name              //FLUSHでONE_PAIR（トランプとしてはありえない）
-        "C-7 C-Q C-Q C-6 C-7"         || PokerHand.FLUSH.name              //FLUSHでTWO_PAIR（トランプとしてはありえない）
-        "C-Q C-Q C-Q C-6 C-7"         || PokerHand.FLUSH.name              //FLUSHでTHREE_OF_A_KIND（トランプとしてはありえない）
         "S-A D-A C-A S-5 H-5"         || PokerHand.FULL_HOUSE.name
-        "S-A S-A S-A S-5 S-5"         || PokerHand.FULL_HOUSE.name         //FLUSHでFULL_HOUSE（トランプとしてはありえない）
         "H-2 S-2 D-2 C-2 S-3"         || PokerHand.FOUR_OF_A_KIND.name
-        "S-4 S-4 S-4 S-4 S-8"         || PokerHand.FOUR_OF_A_KIND.name     //FLUSHでFOUR_OF_A_KIND（トランプとしてはありえない）
-        "S-4 S-4 S-4 S-4 D-10 D-10"   || PokerHand.FOUR_OF_A_KIND.name     //入力が多いパタン
-        "D-2 H-2 S-K C-A D-3 S-3 C-3" || PokerHand.FULL_HOUSE.name         //入力が多いパタン
-        "D-2 H-2 S-A C-A D-3 S-3 C-3" || PokerHand.THREE_OF_A_KIND.name    //入力が多いパタン
-        "S-6 S-7 S-8 S-9 S-10 S-J"    || PokerHand.STRAIGHT.name           //入力が多いパタン（同じスートが６枚なのでフラッシュにはならない）
         "S-6 S-7 S-8 S-9 S-10"        || PokerHand.STRAIGHT_FLUSH.name
         "D-A D-K D-Q D-J D-10"        || PokerHand.ROYAL_STRAIGHT_FLUSH.name
+    }
+
+    def isOnePair() {
+        expect:
+        PokerHandJudge.isOnePair(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-3 S-4 H-3 H-6 D-5" || true
+        "S-3 S-4 H-3 H-4 D-5" || false
+        "S-3 D-3 H-3 H-4 D-5" || false
+    }
+
+    def isTwoPair() {
+        expect:
+        PokerHandJudge.isTwoPair(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-3 S-4 H-3 H-4 D-5" || true
+        "S-3 S-4 H-3 H-4 D-4" || false
+    }
+
+    def isThreeOfAKind() {
+        expect:
+        PokerHandJudge.isThreeOfAKind(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-3 S-4 H-3 H-4 D-4" || true
+        "S-3 S-4 H-4 C-4 D-4" || false
+    }
+
+    def isStraight() {
+        expect:
+        PokerHandJudge.isStraight(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-2 S-3 H-4 C-5 D-6" || true
+        "S-2 S-3 H-4 C-5 D-A" || false //Aは今回14として扱うため
+        "S-2 S-3 H-4 C-5 D-5" || false
+    }
+
+    def isFlush() {
+        expect:
+        PokerHandJudge.isFlush(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-2 S-3 S-4 S-5 S-6" || true
+        "S-2 S-3 D-4 S-5 S-6" || false
+    }
+
+    def isFullHouse() {
+        expect:
+        PokerHandJudge.isFullHouse(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-A D-A C-A S-5 H-5" || true
+        "S-A D-A C-A H-A H-5" || false
+    }
+
+    def isFourOfAKind() {
+        expect:
+        PokerHandJudge.isFourOfAKind(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                 || expected
+        "S-A D-A C-A H-A H-5" || true
+        "S-A D-5 C-A H-A H-5" || false
+    }
+
+    def isStraightFlush() {
+        expect:
+        PokerHandJudge.isStraightFlush(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                  || expected
+        "S-7 S-8 S-9 S-10 S-J" || true
+        "D-7 S-8 S-9 S-10 S-J" || false
+    }
+
+    def isRoyalStraightFlush() {
+        expect:
+        PokerHandJudge.isRoyalStraightFlush(
+                CardList.create(Arrays.asList(cards.split(" ")))
+        ) == expected
+
+        where:
+        cards                  || expected
+        "S-K S-Q S-10 S-J S-A" || true
+        "S-K S-Q S-10 D-J S-A" || false
     }
 }
