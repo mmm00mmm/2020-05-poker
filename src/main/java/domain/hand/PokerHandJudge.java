@@ -73,11 +73,8 @@ public class PokerHandJudge {
     static boolean isFlush(List<Card> cards) {
         //同じスートの５枚
         return cards.stream()
-                .collect(
-                        Collectors.groupingBy(Card::getSuit, Collectors.counting())
-                )
-                .entrySet().stream()
-                .filter(c -> c.getValue() == 5)
+                .map(Card::getSuit)
+                .distinct()
                 .count() == 1;
     }
 
