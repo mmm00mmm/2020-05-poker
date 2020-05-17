@@ -1,37 +1,37 @@
 package domain.hand
 
-import domain.card.CardList
+import domain.card.Cards
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Unroll
 class PokerHandJudgeTest extends Specification {
+    private static Cards createCards(String cards) {
+        return Cards.create(cards)
+    }
+
     def judge() {
         expect:
-        PokerHandJudge.judge(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.judge(createCards(cards)) == expected
 
         where:
-        cards                         || expected
-        "H-Q D-A S-2 D-3 D-K"         || PokerHand.HIGH_CARDS.name
-        "D-2 C-Q D-J S-A D-10"        || PokerHand.HIGH_CARDS.name
-        "S-3 S-4 H-3 H-6 D-5"         || PokerHand.ONE_PAIR.name
-        "S-3 S-4 H-3 H-4 D-5"         || PokerHand.TWO_PAIR.name
-        "S-3 S-2 H-3 H-4 D-3"         || PokerHand.THREE_OF_A_KIND.name
-        "S-4 S-2 H-3 H-5 D-6"         || PokerHand.STRAIGHT.name
-        "S-A S-2 S-3 S-5 S-Q"         || PokerHand.FLUSH.name
-        "S-A D-A C-A S-5 H-5"         || PokerHand.FULL_HOUSE.name
-        "H-2 S-2 D-2 C-2 S-3"         || PokerHand.FOUR_OF_A_KIND.name
-        "S-6 S-7 S-8 S-9 S-10"        || PokerHand.STRAIGHT_FLUSH.name
-        "D-A D-K D-Q D-J D-10"        || PokerHand.ROYAL_STRAIGHT_FLUSH.name
+        cards                  || expected
+        "H-Q D-A S-2 D-3 D-K"  || PokerHand.HIGH_CARDS
+        "D-2 C-Q D-J S-A D-10" || PokerHand.HIGH_CARDS
+        "S-3 S-4 H-3 H-6 D-5"  || PokerHand.ONE_PAIR
+        "S-3 S-4 H-3 H-4 D-5"  || PokerHand.TWO_PAIR
+        "S-3 S-2 H-3 H-4 D-3"  || PokerHand.THREE_OF_A_KIND
+        "S-4 S-2 H-3 H-5 D-6"  || PokerHand.STRAIGHT
+        "S-A S-2 S-3 S-5 S-Q"  || PokerHand.FLUSH
+        "S-A D-A C-A S-5 H-5"  || PokerHand.FULL_HOUSE
+        "H-2 S-2 D-2 C-2 S-3"  || PokerHand.FOUR_OF_A_KIND
+        "S-6 S-7 S-8 S-9 S-10" || PokerHand.STRAIGHT_FLUSH
+        "D-A D-K D-Q D-J D-10" || PokerHand.ROYAL_STRAIGHT_FLUSH
     }
 
     def isOnePair() {
         expect:
-        PokerHandJudge.isOnePair(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isOnePair(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -42,9 +42,7 @@ class PokerHandJudgeTest extends Specification {
 
     def isTwoPair() {
         expect:
-        PokerHandJudge.isTwoPair(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isTwoPair(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -54,9 +52,7 @@ class PokerHandJudgeTest extends Specification {
 
     def isThreeOfAKind() {
         expect:
-        PokerHandJudge.isThreeOfAKind(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isThreeOfAKind(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -66,9 +62,7 @@ class PokerHandJudgeTest extends Specification {
 
     def isStraight() {
         expect:
-        PokerHandJudge.isStraight(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isStraight(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -79,9 +73,7 @@ class PokerHandJudgeTest extends Specification {
 
     def isFlush() {
         expect:
-        PokerHandJudge.isFlush(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isFlush(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -91,9 +83,7 @@ class PokerHandJudgeTest extends Specification {
 
     def isFullHouse() {
         expect:
-        PokerHandJudge.isFullHouse(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isFullHouse(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -103,9 +93,7 @@ class PokerHandJudgeTest extends Specification {
 
     def isFourOfAKind() {
         expect:
-        PokerHandJudge.isFourOfAKind(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isFourOfAKind(createCards(cards)) == expected
 
         where:
         cards                 || expected
@@ -115,21 +103,18 @@ class PokerHandJudgeTest extends Specification {
 
     def isStraightFlush() {
         expect:
-        PokerHandJudge.isStraightFlush(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isStraightFlush(createCards(cards)) == expected
 
         where:
         cards                  || expected
         "S-7 S-8 S-9 S-10 S-J" || true
         "D-7 S-8 S-9 S-10 S-J" || false
+        "S-7 S-8 S-9 S-K S-J"  || false
     }
 
     def isRoyalStraightFlush() {
         expect:
-        PokerHandJudge.isRoyalStraightFlush(
-                CardList.create(Arrays.asList(cards.split(" ")))
-        ) == expected
+        PokerHandJudge.isRoyalStraightFlush(createCards(cards)) == expected
 
         where:
         cards                  || expected
