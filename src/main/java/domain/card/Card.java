@@ -1,5 +1,6 @@
 package domain.card;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,7 +8,7 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
 @Getter
 public class Card {
@@ -18,7 +19,7 @@ public class Card {
         List<String> splitCard = Arrays.asList(s.split("-"));
         return new Card(
                 Suit.getSuit(splitCard.get(0)),
-                TrumpNumber.getTrumpNumber(splitCard.get(1))
+                TrumpNumber.create(splitCard.get(1))
         );
     }
 }

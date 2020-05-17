@@ -7,7 +7,7 @@ import spock.lang.Unroll
 class CardTest extends Specification {
     def create() {
         expect:
-        Card.create("S-3") == new Card(Suit.Spade, TrumpNumber.THREE)
+        Card.create("S-3") == new Card(Suit.Spade, new TrumpNumber(3))
     }
 
     def failure() {
@@ -22,6 +22,5 @@ class CardTest extends Specification {
         input  || expected
         "S,13" || "スートが不正"
         "A-5"  || "スートが不正"
-        "S-13" || "カードの数字が不正"
     }
 }
