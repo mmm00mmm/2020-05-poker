@@ -3,6 +3,61 @@
 https://github.com/suzuki-hoge/hoge-works/blob/master/2016-07-poker/README.md
 
 ## 日誌
+### 2020/5/13-5/17
+#### 指摘反映
++ [x] ︎onePairの中身を共通化する
++ [x] ストレート微妙。forで抜けなかったらこっち、はバグる（for elseということもある）
++ [x] フラッシュももう少し楽にかける
++ [x] RSFいまいち
++ [x] sfのテストはもう１パタン欲しい
++ [x] enumにStringもつとしてもjudgeの終わった段階でstringにするメリットなし、Mainでやるべき。出力要件はドメインではない
++ [x] 各判定メソッドはpackage privateがいい
++ [x] テスト側にString->CardListのメソッドを作る。毎回CardList生成が長い
++ [x] return true はやめるべき
++ [x] judgeの戻りがStringである必要がない
++ groovyのlistは[]でいい
++ CardListが薄い
+  + パース失敗を例外にするなら、例えば同じカードがダブっているとかも例外にしたほうがよい
+  + [x] 枚数も順序も伝わってこない
+  + [x] List<Card>は無い！
++ enumにStringもつな
++ Convertは使ってないなら消す！
+
+#### メモ
++ Straight判定について
+  + 隣の値との関係は意識しない
+  + どういうリストであるべきかを考える
+  + ストレートのリストを作り、そのリストと比較すればよい
+  + ストレートのリストの作成方法はいろんなものがある（下記参照）<br>
+  （zipについては：https://qiita.com/suzuki-hoge/items/b095f218d9b3d7f1e48c）
+ ```
+  1. IntStream.range(n, n + 5)
+  2. Stream.genarate(() -> 1).limit(5) // 1を5つ作成する
+  3. Stream.iterate(n, n -> n + 1).limit(5) // 初期値を1ずつ増やした数を5つ作成する
+  4. ストレートの比較を[0, 1, 2, 3, 4]で行う
+     List<Integer> ns = Arrays.asList(6, 7, 8, 9, 10);
+     ns.stream()
+             .map(n -> n - 6)
+             .collect(Collectors.toList())
+             .equals(
+                     Arrays.asList(0, 1, 2, 3, 4)
+             );
+  
+  5. javaslangだと以下のような書き方も可能
+     ns = List.range(6,11); // [6, 7, 8, 9, 10]
+     // Taple形式で、(6,7)(7,8)(8,9)(9,10)を作る
+     // zipは小さいリストの方に合わせて作られる
+     ns.zip(ns.tail()).map(t -> t._2 - t._1).forAll(n -> n == 1) // tail: [7, 8, 9, 10]
+  
+ ```
++ PokerHandJudgeはそのままで、Cardsを定義してもよい
++ Cardsに判定を置く場合、各メソッドの引数でCardsをもらう必要はない
++ ConvertはCardsのFactory、xのファクトリーがxを返すべき<br>
+今回だとList<Card>を返しているのが変
++ staticとprivateはセットで扱う<br>
+staticでコンストラクタを使いたいなら、コンストラクタはprivateにして他からnewできないようにするべき<br>
+`@AllArgsConstructor(access = AccessLevel.PRIVATE)`
+
 ### 2020/05/10
 + 所要時間：2.5h
 + 実装順
