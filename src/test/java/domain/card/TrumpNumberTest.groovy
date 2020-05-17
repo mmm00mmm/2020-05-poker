@@ -7,31 +7,22 @@ import spock.lang.Unroll
 class TrumpNumberTest extends Specification {
     def getTrumpNumber() {
         expect:
-        TrumpNumber.getTrumpNumber(name) == expected
+        TrumpNumber.create(name) == new TrumpNumber(expected)
 
         where:
         name || expected
-        "2"  || TrumpNumber.TWO
-        "3"  || TrumpNumber.THREE
-        "4"  || TrumpNumber.FOUR
-        "5"  || TrumpNumber.FIVE
-        "6"  || TrumpNumber.SIX
-        "7"  || TrumpNumber.SEVEN
-        "8"  || TrumpNumber.EIGHT
-        "9"  || TrumpNumber.NINE
-        "10" || TrumpNumber.TEN
-        "J"  || TrumpNumber.JACK
-        "Q"  || TrumpNumber.QUEEN
-        "K"  || TrumpNumber.KING
-        "A"  || TrumpNumber.ACE
-    }
-
-    def failure() {
-        when:
-        TrumpNumber.getTrumpNumber("11")
-
-        then:
-        def e = thrown(RuntimeException)
-        e.message == "カードの数字が不正"
+        "2"  || 2
+        "3"  || 3
+        "4"  || 4
+        "5"  || 5
+        "6"  || 6
+        "7"  || 7
+        "8"  || 8
+        "9"  || 9
+        "10" || 10
+        "J"  || 11
+        "Q"  || 12
+        "K"  || 13
+        "A"  || 14
     }
 }
